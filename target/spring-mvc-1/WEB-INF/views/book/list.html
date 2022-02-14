@@ -9,40 +9,32 @@
     <div class="container">
         <div class="row">
             <div class="mx-auto">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#createBookModal">
-                    <i class="fa fa-plus"></i> Add
-                </button>
+                <a th:href="@{/book/create/}">
+                    <button type="button" class="btn btn-success">
+                        <i class="fa fa-plus"></i> Add
+                    </button>
+                </a>
+
                 <table class="table">
                     <thead class="table-dark">
                     <tr>
-                        <th>id</th>
+                        <th>Image</th>
                         <th>name</th>
                         <th>author</th>
                         <th>page count</th>
-                        <th>Details</th>
-                        <th>Action</th>
                     </tr>
                     </thead>
 
                     <tbody>
                     <tr th:each="book, iter : ${books}">
-                        <td th:text="${iter.count}"></td>
-                        <td th:text="${book.name}"></td>
+                        <td>
+                            <img th:src="${book.imgPath}" alt="Texnik nosozlik"/>
+                        </td>
+                        <td>
+                            <a th:href="${book.resourceDto.path}" th:text="${book.name}"></a>
+                        </td>
                         <td th:text="${book.author}"></td>
                         <td th:text="${book.pageCount}"></td>
-                        <td>
-                            <ol th:object="${book.resourceDto}">
-                                <li th:text="*{originalName}"></li>
-                                <li th:text="*{size}"></li>
-                                <li th:text="*{contentType}"></li>
-                                <li th:text="*{path}"></li>
-                            </ol>
-                        </td>
-                        <td>
-                            <a th:href="@{/book/detail/{id}/(id=${book.id}) }" class="btn btn-primary">Details</a> ||
-                            <a th:href="@{/book/delete/{id}/(id=${book.id}) }" class="btn btn-danger">Delete</a> ||
-                            <a th:href="@{/book/update/{id}/(id=${book.id}) }" class="btn btn-secondary">Update</a>
-                        </td>
                     </tr>
                     </tbody>
                 </table>

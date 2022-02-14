@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragment.html :: head('Create Book')">
+</head>
+<body>
+<section th:include="fragment.html :: navbar">
+</section>
+
+<div class="container">
+    <form method="post" th:action="@{/book/create/}" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="book_name">Name</label>
+            <input type="text" class="form-control" name="name" id="book_name" th:value="${dto.name}"
+                   placeholder="Name...">
+        </div>
+        <div class="form-group">
+            <label for="book_author">Author</label>
+            <input type="text" class="form-control" name="author" id="book_author" th:value="${dto.author}"
+                   placeholder="John Doe...">
+        </div>
+        <div class="form-group">
+            <label for="book_page_count">Page Count</label>
+            <input type="number" class="form-control" name="pageCount" id="book_page_count" th:value="${dto.pageCount}"
+                   placeholder="0,1,2, ... ">
+        </div>
+        <div class="form-group">
+            <label for="description">Example textarea</label>
+            <textarea class="form-control" id="description" name="description" th:value="${dto.description}"
+                      rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="file">Upload File</label>
+            <input type="file" class="form-control-file" id="file" name="file"/>
+        </div>
+        <div class="form-group">
+            <label for="file">Upload Image</label>
+            <input type="file" class="form-control-file" id="img" name="img"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+</body>
+</html>

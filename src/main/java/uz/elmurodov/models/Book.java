@@ -16,6 +16,8 @@ public class Book {
     private Integer pageCount;
     private String author;
     private ResourceDto resourceDto;
+    private String description;
+    private String imgPath;
 
     public Book() {
         this.id = UUID.randomUUID();

@@ -12,4 +12,5 @@ public class BookCreateDto {
     private String name;
     private String author;
     private Integer pageCount;
+    private String description;
 }

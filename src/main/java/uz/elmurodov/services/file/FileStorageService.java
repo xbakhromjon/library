@@ -24,7 +24,8 @@ import java.util.Base64;
 @Service
 public class FileStorageService {
 
-    private final String FILE_UPLOAD_PATH = "/upload/b3/test/";
+    private final String FILE_UPLOAD_PATH = "C:/upload/b3/test/";
+    private final String IMG_UPLOAD_PATH = FILE_UPLOAD_PATH + "images/";
     private final Path rootLocation;
 
     public FileStorageService() {
@@ -58,6 +59,7 @@ public class FileStorageService {
         long size = file.getSize();
         String contentType = file.getContentType();
         String extension = StringUtils.getFilenameExtension(originalFilename);
+        System.out.println(extension);
         String generatedName = System.currentTimeMillis() + "." + extension;
         Files.copy(file.getInputStream(), Paths.get(FILE_UPLOAD_PATH, generatedName), StandardCopyOption.REPLACE_EXISTING);
         String path = "/uploads/" + generatedName;
@@ -69,6 +71,13 @@ public class FileStorageService {
                 .path(path)
                 .build();
 
+    }
+
+    public String storeImg(MultipartFile img) throws IOException {
+        String extension = StringUtils.getFilenameExtension(img.getOriginalFilename());
+        String generatedName = System.currentTimeMillis() + "." + extension;
+        Files.copy(img.getInputStream(), Paths.get(IMG_UPLOAD_PATH, generatedName), StandardCopyOption.REPLACE_EXISTING);
+        return FILE_UPLOAD_PATH + "/" + generatedName;
     }
 
 
