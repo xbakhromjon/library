@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import uz.elmurodov.criteria.BookCriteria;
 import uz.elmurodov.dto.book.BookCreateDto;
 import uz.elmurodov.dto.file.ResourceDto;
 import uz.elmurodov.exceptions.NotFoundException;
@@ -17,6 +18,8 @@ import uz.elmurodov.services.file.FileStorageService;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service("fakeBookService")
@@ -48,12 +51,9 @@ public class FakeBookService implements BookService {
     public ResponseEntity<String> create(BookCreateDto dto, MultipartFile file, MultipartFile img) throws IOException {
         Book book = mapper.toEntity(dto);
         ResponseEntity<String> response = new ResponseEntity<>(new ResponseBody<>(""));
-        if (!bookFileType.contains(StringUtils.getFilenameExtension(file.getOriginalFilename()))
+        if (!(bookFileType.contains(StringUtils.getFilenameExtension(file.getOriginalFilename())) ||
+                imgFileType.contains(StringUtils.getFilenameExtension(img.getOriginalFilename())))
         ) {
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            return response;
-        }
-        if (!imgFileType.contains(StringUtils.getFilenameExtension(img.getOriginalFilename()))) {
             response.setStatus(HttpStatus.BAD_REQUEST);
             return response;
         }
@@ -62,6 +62,8 @@ public class FakeBookService implements BookService {
         book.setName(resourceDto.getOriginalName());
         String imgPath = fileStorageService.storeImg(img);
         book.setImgPath(imgPath);
+        book.setSize(resourceDto.getSize());
+        book.setExtention(resourceDto.getContentType());
         BOOK_LIST.add(book);
         response.getBody().setBody(book.getId());
         return response;
@@ -75,5 +77,25 @@ public class FakeBookService implements BookService {
     @Override
     public ResponseEntity<Boolean> update(Object o) {
         return null;
+    }
+
+    @Override
+    public ResponseEntity<List<Book>> getAll(BookCriteria bookCriteria) {
+        ResponseEntity<List<Book>> response = new ResponseEntity<>();
+        List<Book> collect = new ArrayList<>();
+        Stream<Book> stream = BOOK_LIST.stream();
+        String filter = (bookCriteria.getFilter() == null) ? "title" : bookCriteria.getFilter();
+        String search = bookCriteria.getSearch();
+        if (filter.equals("title")) {
+            collect = stream.filter(book -> book.getName().contains(search)).collect(Collectors.toList());
+        } else if(filter.equals("author")) {
+            collect = stream.filter(book -> book.getAuthor().contains(search)).collect(Collectors.toList());
+        } else if (filter.equals("year")) {
+            collect = stream.filter(book -> book.getYear().toString().equals(search)).collect(Collectors.toList());
+        } else if (filter.equals("publisher")) {
+            collect = stream.filter(book -> book.getPublisher().contains(search)).collect(Collectors.toList());
+        }
+        response.setBody(new ResponseBody<>(collect));
+        return response;
     }
 }

@@ -12,9 +12,12 @@ public class BookMapper {
     public Book toEntity(BookCreateDto dto) {
         Book book = new Book();
         book.setId(UUID.randomUUID());
-        book.setName(dto.getName());
         book.setAuthor(dto.getAuthor());
         book.setPageCount(dto.getPageCount());
+        book.setPublisher(dto.getPublisher());
+        book.setYear(dto.getYear());
+        book.setLanguage(dto.getLanguage());
+        book.setSummary(dto.getSummary());
         return book;
     }
 }

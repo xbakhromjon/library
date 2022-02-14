@@ -1,46 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:include="fragment.html :: head('Book List')">
 </head>
 <body>
 <section th:include="fragment.html :: navbar"></section>
-<section th:include="popups.html :: create_book_modal"></section>
+<section th:include="fragment.html :: search"></section>
 <section>
-    <div class="container">
-        <div class="row">
-            <div class="mx-auto">
-                <a th:href="@{/book/create/}">
-                    <button type="button" class="btn btn-success">
-                        <i class="fa fa-plus"></i> Add
-                    </button>
-                </a>
-
-                <table class="table">
-                    <thead class="table-dark">
-                    <tr>
-                        <th>Image</th>
-                        <th>name</th>
-                        <th>author</th>
-                        <th>page count</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr th:each="book, iter : ${books}">
-                        <td>
-                            <img th:src="${book.imgPath}" alt="Texnik nosozlik"/>
-                        </td>
-                        <td>
-                            <a th:href="${book.resourceDto.path}" th:text="${book.name}"></a>
-                        </td>
-                        <td th:text="${book.author}"></td>
-                        <td th:text="${book.pageCount}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+   <div class="container" style="margin-top: 10px">
+       <table class="table">
+           <thead>
+           <tr>
+               <th scope="col">Title</th>
+               <th scope="col">Author(s)</th>
+               <th scope="col">Publisher</th>
+               <th scope="col">Year</th>
+               <th scope="col">Language</th>
+               <th scope="col">Pages</th>
+               <th scope="col">Size</th>
+               <th scope="col">Content Type</th>
+           </tr>
+           </thead>
+           <tbody>
+           <tr th:each="book, iter: ${books}">
+               <td>
+                   <a th:href="@{/book/detail/{id}/(id=${book.id})}" th:text="${book.name}"></a>
+               </td>
+               <td th:text="${book.author}">
+               </td>
+               <td th:text="${book.publisher}"></td>
+               <td th:text="${book.year}"></td>
+               <td th:text="${book.language}"></td>
+               <td th:text="${book.pageCount}"></td>
+               <td th:text="${book.size}"></td>
+               <td th:text="${book.extention}"></td>
+           </tr>
+           </tbody>
+       </table>
+   </div>
 </section>
 
 

@@ -24,7 +24,7 @@ import java.util.Base64;
 @Service
 public class FileStorageService {
 
-    private final String FILE_UPLOAD_PATH = "C:/upload/b3/test/";
+    private final String FILE_UPLOAD_PATH = "/upload/b3/test/";
     private final String IMG_UPLOAD_PATH = FILE_UPLOAD_PATH + "images/";
     private final Path rootLocation;
 
@@ -77,7 +77,7 @@ public class FileStorageService {
         String extension = StringUtils.getFilenameExtension(img.getOriginalFilename());
         String generatedName = System.currentTimeMillis() + "." + extension;
         Files.copy(img.getInputStream(), Paths.get(IMG_UPLOAD_PATH, generatedName), StandardCopyOption.REPLACE_EXISTING);
-        return FILE_UPLOAD_PATH + "/" + generatedName;
+        return FILE_UPLOAD_PATH + generatedName;
     }
 
 

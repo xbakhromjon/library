@@ -2,6 +2,7 @@ package uz.elmurodov.services.book;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import uz.elmurodov.criteria.BookCriteria;
 import uz.elmurodov.dto.book.BookCreateDto;
 import uz.elmurodov.models.Book;
 import uz.elmurodov.response.ResponseEntity;
@@ -14,6 +15,11 @@ import java.util.List;
 public class PostgresqlBookService implements BookService {
     @Override
     public ResponseEntity<Book> get(String id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<Book>> getAll(BookCriteria bookCriteria) {
         return null;
     }
 

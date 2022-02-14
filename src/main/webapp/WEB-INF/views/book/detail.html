@@ -1,23 +1,81 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="fragment.html :: head('Book Detail')">
+<head th:include="fragment.html :: head('Detail')">
 </head>
+
+<style>
+    .container .card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row !important;
+        /*padding: 20px;*/
+        /*margin-top: 40px;*/
+    }
+
+    .left {
+        width: 33%;
+    }
+
+    .left img {
+
+        width: 100%;
+
+    }
+
+    .center {
+        width: 33%;
+    }
+
+    .right {
+        width: 33%;
+    }
+
+</style>
 <body>
-<section th:include="fragment.html :: navbar"></section>
-<div class="container mt-5">
-    <div class="row">
-        <ul>
-            <li th:text="${book.name}"></li>
-            <li th:text="${book.author}"></li>
-            <li th:text="${book.pageCount}"></li>
-            <ul th:object="${book.resourceDto}">
-                <li th:text="*{originalName}"></li>
-                <li th:text="*{size}"></li>
-                <li th:text="*{contentType}"></li>
-                <li><a th:href="*{path}">Download</a></li>
-            </ul>
-        </ul>
+<section th:include="fragment.html :: navbar">
+
+</section>
+<section>
+    <div class="container">
+        <div class="card shadow rounded">
+            <div class="left">
+                <img src="/images/1644859214711.png"
+                     alt="Something Wrong">
+            </div>
+            <div class="center text-center">
+                <p>
+                    <a class="btn btn-secondary" data-bs-toggle="collapse" href="#description" role="button"
+                       aria-expanded="false" aria-controls="description" style="margin-right: 20px">
+                        Description
+                    </a>
+                    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#summary" aria-expanded="false" aria-controls="summary">
+                        Summary
+                    </button>
+                </p>
+                <div class="collapse" id="description">
+                    <div class="card card-body" th:text="${book.description}">
+                    </div>
+                </div>
+                <div class="collapse" id="summary">
+                    <div class="card card-body" th:text="${book.summary}">
+                    </div>
+                </div>
+            </div>
+            <div class="right p-5 text-center">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit, vel itaque! Fugit, porro dicta
+                    architecto nam dolorum quaerat libero corrupti.
+                </p>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+<a th:href="${book.resourceDto.path}">Download</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -12,9 +12,18 @@ import uz.elmurodov.services.book.PostgresqlBookService;
 @RequestMapping
 public class HomeController {
 
-    @RequestMapping(value = {"/", "/home"})
-    public String homePage() {
+    @RequestMapping(value = {"/", "/home/"})
+    private String homePage() {
         return "home";
     }
 
+    @RequestMapping("/about/")
+    private String about() {
+        return "extras/about";
+    }
+
+    @RequestMapping("/donation")
+    private String donation() {
+        return "extras/donation";
+    }
 }

@@ -9,18 +9,33 @@
 <div class="container">
     <form method="post" th:action="@{/book/create/}" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="book_author">Author</label>
-            <input type="text" class="form-control" name="author" id="book_author" placeholder="John Doe...">
+            <label for="book_author">Author(s)</label>
+            <input type="text" class="form-control" name="author" id="book_author" placeholder="John Doe, Uncle Bob...">
+        </div>
+        <div class="form-group">
+            <label for="book_page_count">Publisher</label>
+            <input type="text" class="form-control" name="publisher" id="book_page_count" placeholder="e.x Person">
+        </div>
+        <div class="form-group">
+            <label for="book_page_count">Year</label>
+            <input type="number" class="form-control" name="year" id="book_page_count" placeholder="2019...">
+        </div>
+        <div class="form-group">
+            <label for="book_page_count">Language</label>
+            <input type="text" class="form-control" name="language" id="book_page_count" placeholder="English, French....">
         </div>
         <div class="form-group">
             <label for="book_page_count">Page Count</label>
             <input type="number" class="form-control" name="pageCount" id="book_page_count" placeholder="0,1,2, ... ">
         </div>
         <div class="form-group">
-            <label for="description">Example textarea</label>
+            <label for="description">Description</label>
             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
         </div>
-
+        <div class="form-group">
+            <label for="summary">Summary</label>
+            <textarea class="form-control" id="summary" name="summary" rows="3"></textarea>
+        </div>
         <div class="form-group">
             <label for="file">Upload File</label>
             <input type="file" class="form-control-file" id="file" name="file"/>

@@ -9,8 +9,11 @@ import uz.elmurodov.dto.file.ResourceDto;
 @NoArgsConstructor
 @ToString
 public class BookCreateDto {
-    private String name;
     private String author;
     private Integer pageCount;
     private String description;
+    private Long year;
+    private String publisher;
+    private String summary;
+    private String language;
 }
