@@ -1,39 +1,28 @@
 package uz.elmurodov.controllers;
 
 
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import uz.elmurodov.dto.BookCreateDto;
-import uz.elmurodov.exceptions.NotFoundException;
-import uz.elmurodov.mappers.BookMapper;
-import uz.elmurodov.models.Book;
+import uz.elmurodov.dto.book.BookCreateDto;
+import uz.elmurodov.services.book.BookService;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/book/*")
 public class BookController {
 
-    private final BookMapper mapper;
-
-    List<Book> books = Lists.newArrayList();
-
-    {
-        books.add(new Book(UUID.randomUUID(), "Abkar", "Akbar", 2));
-        books.add(new Book(UUID.randomUUID(), "Hayot Yolim(Yohud kun.uz)", "Muslim", 300));
-    }
-
+    private final BookService bookService;
 
     @Autowired
-    public BookController(BookMapper mapper) {
-        this.mapper = mapper;
+    public BookController(@Qualifier("fakeBookService") BookService bookService) {
+        this.bookService = bookService;
     }
 
 
@@ -42,57 +31,35 @@ public class BookController {
         return "/book/create";
     }
 
+    @RequestMapping(value = "create/", method = RequestMethod.POST)
+    private String create(@ModelAttribute BookCreateDto dto, @RequestParam("file") MultipartFile file) throws IOException {
+        bookService.create(dto, file);
+        return "redirect:/book/list/";
+    }
+
     @RequestMapping(value = "delete/{id}/", method = RequestMethod.GET)
     private ModelAndView deletePage(ModelAndView modelAndView, @PathVariable String id) {
-        Optional<Book> optionalBook = books.stream()
-                .filter(book -> book.getId().toString().equals(id)).findFirst();
-
-//        if (optionalBook.isEmpty()) {
-//            modelAndView.setViewName("error/404");
-//            modelAndView.addObject("message", String.format("Book with id %s not found", id));
-//            return modelAndView;
-//        }
-
-        if (optionalBook.isEmpty())
-            throw new NotFoundException(String.format("Book with id %s not found", id), HttpStatus.NOT_FOUND);
-
         modelAndView.setViewName("book/delete");
-        modelAndView.addObject("book", optionalBook.get());
+        modelAndView.addObject("book", bookService.get(id));
         return modelAndView;
     }
 
-//    @ExceptionHandler({RuntimeException.class})
-//    public String errorjon(RuntimeException e, Model model) {
-//        model.addAttribute("message", e.getMessage());
-//        return "error/404";
-//    }
-
     @RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
-    private String details(@PathVariable UUID id) {
-        System.out.println("id = " + id);
-        return "" + id;
+    private String details(Model model, @PathVariable String id) {
+        model.addAttribute("book", bookService.get(id));
+        return "book/detail";
     }
 
     @RequestMapping(value = "list/", method = RequestMethod.GET)
     private String bookListPage(Model model) {
-        model.addAttribute("books", books);
+        model.addAttribute("books", bookService.getAll());
         return "book/list";
-    }
-
-
-    @RequestMapping(value = "create/", method = RequestMethod.POST)
-    private String create(@ModelAttribute BookCreateDto dto) {
-        System.out.println("dto = " + dto);
-        Book book = mapper.toEntity(dto);
-        books.add(book);
-        return "redirect:/book/list/";
     }
 
     @RequestMapping(value = "delete/{id}/", method = RequestMethod.POST)
     private String delete(@PathVariable String id) {
-        books.removeIf(book -> book.getId().toString().equals(id));
+        bookService.delete(id);
         return "redirect:/book/list/";
     }
-
 
 }

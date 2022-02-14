@@ -1,7 +1,7 @@
 package uz.elmurodov.mappers;
 
 import org.springframework.stereotype.Component;
-import uz.elmurodov.dto.BookCreateDto;
+import uz.elmurodov.dto.book.BookCreateDto;
 import uz.elmurodov.models.Book;
 
 import java.util.UUID;

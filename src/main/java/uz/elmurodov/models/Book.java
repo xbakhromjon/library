@@ -3,6 +3,7 @@ package uz.elmurodov.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import uz.elmurodov.dto.file.ResourceDto;
 
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ public class Book {
     private String name;
     private Integer pageCount;
     private String author;
+    private ResourceDto resourceDto;
 
     public Book() {
         this.id = UUID.randomUUID();
@@ -24,5 +26,9 @@ public class Book {
         this.name = name;
         this.author = author;
         this.pageCount = pageCount;
+    }
+
+    public String getId() {
+        return id.toString();
     }
 }
